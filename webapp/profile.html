@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - App Sobriedad</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container active">
+        <!-- Profile Page -->
+        <div class="profile-page page active" id="profilePage">
+            <div class="profile-card">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-name" id="profileName">Usuario</div>
+                <button class="btn btn-green" onclick="logout()">Cerrar Sesión</button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <button class="nav-item" onclick="navigateTo('index.html')">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('calendar.html')">
+                <div class="nav-icon">📅</div>
+                <div class="nav-label">Calendario</div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('forum.html')">
+                <div class="nav-icon">💬</div>
+                <div class="nav-label">Foro</div>
+            </button>
+            <button class="nav-item active" onclick="navigateTo('profile.html')">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Perfil</div>
+            </button>
+        </div>
+    </div>
+
+    <script src="profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario - App Sobriedad</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container active">
+        <!-- Calendar Page -->
+        <div class="calendar-page page active" id="calendarPage">
+            <div class="calendar-header">
+                <button onclick="changeMonth(-1)">←</button>
+                <h2 id="currentMonth"></h2>
+                <button onclick="changeMonth(1)">→</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <button class="nav-item" onclick="navigateTo('index.html')">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </button>
+            <button class="nav-item active" onclick="navigateTo('calendar.html')">
+                <div class="nav-icon">📅</div>
+                <div class="nav-label">Calendario</div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('forum.html')">
+                <div class="nav-icon">💬</div>
+                <div class="nav-label">Foro</div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('profile.html')">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Perfil</div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="relapseModal">
+        <div class="modal-content">
+            <h3>¿Quieres registrar una recaída?</h3>
+            <div class="modal-buttons">
+                <button class="btn btn-white" onclick="closeModal()">No</button>
+                <button class="btn btn-green" onclick="registerRelapse()">Sí</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="calendar.js"></script>
+</body>
+</html>

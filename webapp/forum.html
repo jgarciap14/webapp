@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foro - App Sobriedad</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container active">
+        <!-- Forum Page -->
+        <div class="forum-page page active" id="forumPage">
+            <button class="btn btn-green create-topic-btn" onclick="toggleTopicForm()">Crear Tema</button>
+
+            <div class="topic-form" id="topicForm">
+                <input type="text" id="topicTitle" placeholder="Título del tema" />
+                <textarea id="topicContent" placeholder="Contenido"></textarea>
+                <button class="btn btn-green" onclick="createTopic()">Publicar</button>
+                <button class="btn btn-white" onclick="toggleTopicForm()">Cancelar</button>
+            </div>
+
+            <div id="topicsList"></div>
+
+            <div class="topic-detail" id="topicDetail">
+                <button class="back-btn" onclick="closeTopicDetail()">← Volver</button>
+                <h2 id="detailTitle"></h2>
+                <p id="detailContent"></p>
+                <div id="detailMeta"></div>
+
+                <div class="comment-form">
+                    <h3>Comentarios</h3>
+                    <div id="commentsList"></div>
+                    <textarea id="commentInput" placeholder="Escribe un comentario..."></textarea>
+                    <button class="btn btn-green" onclick="addComment()">Comentar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <button class="nav-item" onclick="navigateTo('index.html')">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('calendar.html')">
+                <div class="nav-icon">📅</div>
+                <div class="nav-label">Calendario</div>
+            </button>
+            <button class="nav-item active" onclick="navigateTo('forum.html')">
+                <div class="nav-icon">💬</div>
+                <div class="nav-label">Foro</div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('profile.html')">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Perfil</div>
+            </button>
+        </div>
+    </div>
+
+    <script src="forum.js"></script>
+</body>
+</html>
