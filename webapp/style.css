@@ -86,6 +86,36 @@ body {
     background: #f0f0f0;
 }
 
+/* Register/Login Link */
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.register-link a {
+    color: #2ecc71;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* Error Message */
+.error-message {
+    display: none;
+    background: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
 /* App Container */
 .app-container {
     display: none;

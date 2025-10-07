@@ -2,7 +2,7 @@ let currentUser = localStorage.getItem('currentUser');
 
 // Redirect to login if not authenticated
 if (!currentUser) {
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
 }
 
 function navigateTo(page) {
@@ -11,7 +11,7 @@ function navigateTo(page) {
 
 function logout() {
     localStorage.removeItem('currentUser');
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
 }
 
 // Initialize

@@ -3,26 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Sobriedad</title>
+    <title>Home - App Sobriedad</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Login Screen -->
-    <div class="login-container" id="loginContainer">
-        <div class="login-box">
-            <h1>Bienvenido</h1>
-            <div class="input-group">
-                <input type="text" id="usernameInput" placeholder="Usuario" />
-            </div>
-            <div class="input-group">
-                <input type="password" id="passwordInput" placeholder="Contraseña" />
-            </div>
-            <button class="btn btn-green" onclick="login()">Iniciar Sesión</button>
-        </div>
-    </div>
-
     <!-- App Container -->
-    <div class="app-container" id="appContainer">
+    <div class="app-container active" id="appContainer">
         <!-- Home Page -->
         <div class="home-page page active" id="homePage">
             <div class="counter-container">
@@ -54,29 +40,12 @@
     </div>
 
     <script>
-        let currentUser = null;
+        let currentUser = localStorage.getItem('currentUser');
         let startDate = null;
 
-        // Check if already logged in
-        const savedUser = localStorage.getItem('currentUser');
-        if (savedUser) {
-            currentUser = savedUser;
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('appContainer').classList.add('active');
-            loadData();
-            updateCounter();
-        }
-
-        function login() {
-            const username = document.getElementById('usernameInput').value;
-            if (username.trim()) {
-                currentUser = username;
-                localStorage.setItem('currentUser', username);
-                document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('appContainer').classList.add('active');
-                loadData();
-                updateCounter();
-            }
+        // Redirect to login if not authenticated
+        if (!currentUser) {
+            window.location.href = 'login.html';
         }
 
         function navigateTo(page) {
@@ -130,6 +99,9 @@
             }
         }
 
+        // Initialize
+        loadData();
+        updateCounter();
         setInterval(updateCounter, 60000);
     </script>
 </body>

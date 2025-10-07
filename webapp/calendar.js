@@ -6,7 +6,7 @@ let selectedDate = null;
 
 // Redirect to login if not authenticated
 if (!currentUser) {
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
 }
 
 function navigateTo(page) {
