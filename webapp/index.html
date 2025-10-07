@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Sobriedad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding-bottom: 70px;
+        }
+
+        /* Login */
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-box h1 {
+            color: #27ae60;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #2ecc71;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-green {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .btn-green:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-white {
+            background: white;
+            color: #2ecc71;
+            border: 2px solid #2ecc71;
+        }
+
+        .btn-white:hover {
+            background: #f0f0f0;
+        }
+
+        /* App Container */
+        .app-container {
+            display: none;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .app-container.active {
+            display: block;
+        }
+
+        /* Home Page */
+        .home-page {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .counter-container {
+            background: white;
+            padding: 40px 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .counter {
+            font-size: 48px;
+            font-weight: bold;
+            color: #27ae60;
+            margin: 20px 0;
+        }
+
+        .counter-label {
+            font-size: 24px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .motivational-phrase {
+            font-size: 18px;
+            color: #777;
+            font-style: italic;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        /* Calendar */
+        .calendar-page {
+            padding: 20px;
+            display: none;
+        }
+
+        .calendar-page.active {
+            display: block;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .calendar-header button {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: bold;
+            color: #2ecc71;
+            padding: 10px 5px;
+            font-size: 12px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+            font-size: 14px;
+            gap: 2px;
+        }
+
+        .calendar-day:hover {
+            background: #f0f0f0;
+        }
+
+        .calendar-day.relapse {
+            background: #ffebee;
+            color: #c62828;
+            font-weight: bold;
+        }
+
+        .calendar-day.relapse::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            background: #2ecc71;
+            border-radius: 50%;
+        }
+
+        .calendar-day.start-date {
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .calendar-day.empty {
+            background: transparent;
+            border: none;
+            cursor: default;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+        }
+
+        /* Forum */
+        .forum-page {
+            padding: 20px;
+            display: none;
+        }
+
+        .forum-page.active {
+            display: block;
+        }
+
+        .create-topic-btn {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .topic-form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .topic-form.active {
+            display: block;
+        }
+
+        .topic-form input,
+        .topic-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        .topic-form textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .topic-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .topic-item:hover {
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .topic-title {
+            font-weight: bold;
+            color: #2ecc71;
+            margin-bottom: 5px;
+        }
+
+        .topic-content {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .topic-meta {
+            font-size: 12px;
+            color: #999;
+            margin-top: 10px;
+        }
+
+        .topic-detail {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .topic-detail.active {
+            display: block;
+        }
+
+        .comment-form {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .comment-item {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #2ecc71;
+            font-size: 14px;
+        }
+
+        .comment-text {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        /* Profile */
+        .profile-page {
+            padding: 40px 20px;
+            display: none;
+        }
+
+        .profile-page.active {
+            display: block;
+        }
+
+        .profile-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: #2ecc71;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            background: transparent;
+            color: #999;
+        }
+
+        .nav-item.active {
+            color: #2ecc71;
+        }
+
+        .nav-item:hover {
+            background: #f5f5f5;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .nav-label {
+            font-size: 12px;
+        }
+
+        .back-btn {
+            background: white;
+            color: #2ecc71;
+            border: 2px solid #2ecc71;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <h1>Bienvenido</h1>
+            <div class="input-group">
+                <input type="text" id="usernameInput" placeholder="Usuario" />
+            </div>
+            <div class="input-group">
+                <input type="password" id="passwordInput" placeholder="Contraseña" />
+            </div>
+            <button class="btn btn-green" onclick="login()">Iniciar Sesión</button>
+        </div>
+    </div>
+
+    <!-- App Container -->
+    <div class="app-container" id="appContainer">
+        <!-- Home Page -->
+        <div class="home-page page active" id="homePage">
+            <div class="counter-container">
+                <div class="counter-label">Días sobrio</div>
+                <div class="counter" id="dayCounter">0</div>
+                <div class="motivational-phrase" id="motivationalPhrase">Inicia un nuevo cambio</div>
+            </div>
+        </div>
+
+        <!-- Calendar Page -->
+        <div class="calendar-page page" id="calendarPage">
+            <div class="calendar-header">
+                <button onclick="changeMonth(-1)">←</button>
+                <h2 id="currentMonth"></h2>
+                <button onclick="changeMonth(1)">→</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+
+        <!-- Forum Page -->
+        <div class="forum-page page" id="forumPage">
+            <button class="btn btn-green create-topic-btn" onclick="toggleTopicForm()">Crear Tema</button>
+            
+            <div class="topic-form" id="topicForm">
+                <input type="text" id="topicTitle" placeholder="Título del tema" />
+                <textarea id="topicContent" placeholder="Contenido"></textarea>
+                <button class="btn btn-green" onclick="createTopic()">Publicar</button>
+                <button class="btn btn-white" onclick="toggleTopicForm()">Cancelar</button>
+            </div>
+
+            <div id="topicsList"></div>
+            
+            <div class="topic-detail" id="topicDetail">
+                <button class="back-btn" onclick="closeTopicDetail()">← Volver</button>
+                <h2 id="detailTitle"></h2>
+                <p id="detailContent"></p>
+                <div id="detailMeta"></div>
+                
+                <div class="comment-form">
+                    <h3>Comentarios</h3>
+                    <div id="commentsList"></div>
+                    <textarea id="commentInput" placeholder="Escribe un comentario..."></textarea>
+                    <button class="btn btn-green" onclick="addComment()">Comentar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div class="profile-page page" id="profilePage">
+            <div class="profile-card">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-name" id="profileName">Usuario</div>
+                <button class="btn btn-green" onclick="logout()">Cerrar Sesión</button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <button class="nav-item active" onclick="navigateTo('home')">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('calendar')">
+                <div class="nav-icon">📅</div>
+                <div class="nav-label">Calendario</div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('forum')">
+                <div class="nav-icon">💬</div>
+                <div class="nav-label">Foro</div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('profile')">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Perfil</div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="relapseModal">
+        <div class="modal-content">
+            <h3>¿Quieres registrar una recaída?</h3>
+            <div class="modal-buttons">
+                <button class="btn btn-white" onclick="closeModal()">No</button>
+                <button class="btn btn-green" onclick="registerRelapse()">Sí</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let startDate = null;
+        let relapses = [];
+        let topics = [];
+        let currentMonth = new Date();
+        let selectedDate = null;
+        let currentTopicId = null;
+
+        function login() {
+            const username = document.getElementById('usernameInput').value;
+            if (username.trim()) {
+                currentUser = username;
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('appContainer').classList.add('active');
+                document.getElementById('profileName').textContent = username;
+                loadData();
+                updateCounter();
+                renderCalendar();
+                renderTopics();
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginContainer').style.display = 'flex';
+            document.getElementById('appContainer').classList.remove('active');
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
+        }
+
+        function navigateTo(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById(page + 'Page').classList.add('active');
+            event.target.closest('.nav-item').classList.add('active');
+            
+            if (page === 'calendar') {
+                renderCalendar();
+            } else if (page === 'forum') {
+                renderTopics();
+            }
+        }
+
+        function updateCounter() {
+            if (!startDate) {
+                startDate = new Date();
+                saveData();
+            }
+            
+            const today = new Date();
+            const diffTime = Math.abs(today - new Date(startDate));
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('dayCounter').textContent = diffDays;
+            updateMotivationalPhrase(diffDays);
+        }
+
+        function updateMotivationalPhrase(days) {
+            let phrase = '';
+            if (days === 0) phrase = 'Inicia un nuevo cambio';
+            else if (days < 7) phrase = 'Un día a la vez, ¡vas bien!';
+            else if (days < 30) phrase = 'Tú puedes, sigue adelante';
+            else if (days < 90) phrase = '¡Excelente progreso! Sigue así';
+            else if (days < 180) phrase = '¡Increíble! Eres más fuerte de lo que crees';
+            else phrase = '¡Extraordinario! Eres un ejemplo de fortaleza';
+            
+            document.getElementById('motivationalPhrase').textContent = phrase;
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+            
+            const year = currentMonth.getFullYear();
+            const month = currentMonth.getMonth();
+            
+            document.getElementById('currentMonth').textContent = 
+                currentMonth.toLocaleDateString('es', { month: 'long', year: 'numeric' });
+            
+            const daysOfWeek = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            daysOfWeek.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = day;
+                grid.appendChild(header);
+            });
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            for (let i = 0; i < firstDay; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'calendar-day empty';
+                grid.appendChild(empty);
+            }
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-day';
+                dayEl.textContent = day;
+                
+                const currentDate = new Date(year, month, day);
+                const dateStr = currentDate.toISOString().split('T')[0];
+                
+                if (startDate && dateStr === new Date(startDate).toISOString().split('T')[0]) {
+                    dayEl.classList.add('start-date');
+                }
+                
+                if (relapses.includes(dateStr)) {
+                    dayEl.classList.add('relapse');
+                }
+                
+                dayEl.onclick = () => openRelapseModal(currentDate);
+                grid.appendChild(dayEl);
+            }
+        }
+
+        function changeMonth(delta) {
+            currentMonth.setMonth(currentMonth.getMonth() + delta);
+            renderCalendar();
+        }
+
+        function openRelapseModal(date) {
+            selectedDate = date;
+            document.getElementById('relapseModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('relapseModal').classList.remove('active');
+            selectedDate = null;
+        }
+
+        function registerRelapse() {
+            if (selectedDate) {
+                const dateStr = selectedDate.toISOString().split('T')[0];
+                if (!relapses.includes(dateStr)) {
+                    relapses.push(dateStr);
+                }
+                startDate = selectedDate;
+                saveData();
+                updateCounter();
+                renderCalendar();
+            }
+            closeModal();
+        }
+
+        function toggleTopicForm() {
+            const form = document.getElementById('topicForm');
+            form.classList.toggle('active');
+        }
+
+        function createTopic() {
+            const title = document.getElementById('topicTitle').value;
+            const content = document.getElementById('topicContent').value;
+            
+            if (title.trim() && content.trim()) {
+                const topic = {
+                    id: Date.now(),
+                    title,
+                    content,
+                    author: currentUser,
+                    date: new Date().toLocaleString('es'),
+                    comments: []
+                };
+                
+                topics.unshift(topic);
+                saveData();
+                renderTopics();
+                
+                document.getElementById('topicTitle').value = '';
+                document.getElementById('topicContent').value = '';
+                toggleTopicForm();
+            }
+        }
+
+        function renderTopics() {
+            const list = document.getElementById('topicsList');
+            list.innerHTML = '';
+            
+            topics.forEach(topic => {
+                const item = document.createElement('div');
+                item.className = 'topic-item';
+                item.onclick = () => openTopicDetail(topic.id);
+                
+                item.innerHTML = `
+                    <div class="topic-title">${topic.title}</div>
+                    <div class="topic-content">${topic.content.substring(0, 100)}...</div>
+                    <div class="topic-meta">Por ${topic.author} - ${topic.date} - ${topic.comments.length} comentarios</div>
+                `;
+                
+                list.appendChild(item);
+            });
+        }
+
+        function openTopicDetail(topicId) {
+            currentTopicId = topicId;
+            const topic = topics.find(t => t.id === topicId);
+            
+            if (topic) {
+                document.getElementById('topicsList').style.display = 'none';
+                document.querySelector('.topic-form').style.display = 'none';
+                document.querySelector('.create-topic-btn').style.display = 'none';
+                
+                document.getElementById('topicDetail').classList.add('active');
+                document.getElementById('detailTitle').textContent = topic.title;
+                document.getElementById('detailContent').textContent = topic.content;
+                document.getElementById('detailMeta').textContent = `Por ${topic.author} - ${topic.date}`;
+                
+                renderComments(topic.comments);
+            }
+        }
+
+        function closeTopicDetail() {
+            document.getElementById('topicDetail').classList.remove('active');
+            document.getElementById('topicsList').style.display = 'block';
+            document.querySelector('.create-topic-btn').style.display = 'block';
+            currentTopicId = null;
+        }
+
+        function renderComments(comments) {
+            const list = document.getElementById('commentsList');
+            list.innerHTML = '';
+            
+            comments.forEach(comment => {
+                const item = document.createElement('div');
+                item.className = 'comment-item';
+                item.innerHTML = `
+                    <div class="comment-author">${comment.author}</div>
+                    <div class="comment-text">${comment.text}</div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function addComment() {
+            const text = document.getElementById('commentInput').value;
+            
+            if (text.trim() && currentTopicId) {
+                const topic = topics.find(t => t.id === currentTopicId);
+                
+                if (topic) {
+                    const comment = {
+                        author: currentUser,
+                        text,
+                        date: new Date().toLocaleString('es')
+                    };
+                    
+                    topic.comments.push(comment);
+                    saveData();
+                    renderComments(topic.comments);
+                    document.getElementById('commentInput').value = '';
+                }
+            }
+        }
+
+        function saveData() {
+            const data = {
+                startDate,
+                relapses,
+                topics
+            };
+            const key = `sobrietyApp_${currentUser}`;
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        function loadData() {
+            const key = `sobrietyApp_${currentUser}`;
+            const saved = localStorage.getItem(key);
+            
+            if (saved) {
+                const data = JSON.parse(saved);
+                startDate = data.startDate ? new Date(data.startDate) : new Date();
+                relapses = data.relapses || [];
+                topics = data.topics || [];
+            } else {
+                startDate = new Date();
+                relapses = [];
+                topics = [];
+            }
+        }
+
+        setInterval(updateCounter, 60000);
+    </script>
+</body>
+</html>
