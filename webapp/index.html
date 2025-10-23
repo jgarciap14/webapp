@@ -80,23 +80,44 @@
             let symptom = '';
 
             if (days === 0) {
-                symptom = 'Ansiedad';
+                symptom = 'Inicio del cambio';
                 phrase = 'Inicia un nuevo cambio';
-            } else if (days < 7) {
-                symptom = 'Ansiedad';
-                phrase = 'Un día a la vez, ¡vas bien!';
-            } else if (days < 30) {
-                symptom = 'Irritabilidad';
-                phrase = 'Tú puedes, sigue adelante';
-            } else if (days < 90) {
-                symptom = 'Insomnio';
-                phrase = '¡Excelente progreso! Sigue así';
-            } else if (days < 180) {
-                symptom = 'Fatiga';
-                phrase = '¡Increíble! Eres más fuerte de lo que crees';
+            } else if (days === 1) {
+                symptom = 'Temblores leves, ansiedad, náuseas y sudoración';
+                phrase = '¡Fuerza! Tu cuerpo está empezando a limpiarse. Hidrátate constantemente (agua o bebidas isotónicas) y trata de comer algo ligero, aunque no tengas apetito. ¡Has superado el día más difícil!';
+            } else if (days >= 2 && days <= 3) {
+                symptom = 'Insomnio, irritabilidad e inquietud. Antojos intensos';
+                phrase = '¡No estás solo en esto! Intenta darte una ducha caliente para relajar los músculos. Escucha música tranquila o un podcast para distraer tu mente. Llama a alguien de tu red de apoyo.';
+            } else if (days >= 4 && days <= 5) {
+                symptom = 'Niebla mental, dificultad para pensar con claridad, fatiga extrema y cambios de humor bruscos';
+                phrase = 'Sé paciente contigo mismo. Tu cerebro está trabajando duro para reequilibrarse. Evita decisiones importantes. Escribe 3 cosas pequeñas que puedas hacer hoy (ej: tender la cama, lavarte los dientes, comer una fruta).';
+            } else if (days >= 6 && days <= 7) {
+                symptom = 'Los temblores y náuseas disminuyen, pero la ansiedad y fatiga emocional pueden persistir';
+                phrase = '¡Felicidades por tu primera semana! ¡Es un logro gigante! Trata de salir a caminar 10 minutos. El aire fresco y el movimiento ligero hacen maravillas.';
+            } else if (days >= 8 && days <= 14) {
+                symptom = 'Aburrimiento, apatía o sensación de vacío. El insomnio puede continuar';
+                phrase = 'El aburrimiento es un disparador. Es vital crear una rutina simple. Establece horas fijas para dormir, despertar y comer. Busca una actividad que ocupe tus manos (dibujar, armar algo, cocinar).';
+            } else if (days >= 15 && days <= 21) {
+                symptom = 'Nube rosa: un optimismo excesivo, sintiendo que ya estás curado';
+                phrase = '¡Es genial sentirse bien! Disfrútalo, pero mantente alerta. Sigue conectado a tu terapia o grupo de apoyo. Recuerda por qué empezaste este camino.';
+            } else if (days >= 22 && days <= 30) {
+                symptom = 'Los antojos pueden volver sorpresivamente, disparados por lugares, olores o emociones';
+                phrase = '¡Lograste un mes completo! ¡Increíble!. Si un antojo aparece, ponle un "temporizador". Dile "OK, te siento, pero voy a esperar 15 minutos". Usualmente, la intensidad bajará.';
+            } else if (days >= 31 && days <= 90) {
+                symptom = 'Oleadas de ansiedad, irritabilidad o depresión que parecen salir "de la nada". Problemas de memoria';
+                phrase = '¡Esto es normal! No significa que estés retrocediendo. Es tu cerebro sanando a un nivel más profundo. Habla sobre esto, no lo guardes. ¡Pasará!';
+            } else if (days >= 91 && days <= 180) {
+                symptom = 'Dificultad para manejar el estrés. Sentimientos de impaciencia';
+                phrase = 'La recuperación es un maratón. Estás aprendiendo a vivir sin muletas. Es el momento perfecto para enfocarte en el manejo saludable del estrés: ejercicio regular, meditación o un nuevo hobby.';
+            } else if (days >= 181 && days <= 270) {
+                symptom = 'Exceso de confianza o complacencia';
+                phrase = '¡Mantente conectado! Tu red de apoyo es vital ahora. Ayudar a otros que están empezando (si te sientes listo) puede fortalecer tu propia recuperación. ¡Celebra este medio año!';
+            } else if (days >= 271 && days <= 365) {
+                symptom = 'Los viejos hábitos de pensamiento pueden resurgir bajo estrés extremo';
+                phrase = '¡Un año de sobriedad es un hito monumental! Has demostrado una fuerza increíble. Recuerda las herramientas que has aprendido. El estrés es parte de la vida, pero ahora tienes formas saludables de enfrentarlo. ¡Sigue adelante!';
             } else {
-                symptom = 'Estabilidad';
-                phrase = '¡Extraordinario! Eres un ejemplo de fortaleza';
+                symptom = 'Estabilidad y fortaleza';
+                phrase = '¡Extraordinario! Eres un ejemplo de fortaleza y perseverancia. Has superado más de un año de sobriedad.';
             }
 
             document.getElementById('symptomLabel').textContent = symptom;
