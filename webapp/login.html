@@ -11,13 +11,14 @@
     <div class="login-container" id="loginContainer">
         <div class="login-box">
             <h1>Bienvenido</h1>
+            <div class="error-message" id="errorMessage"></div>
             <div class="input-group">
                 <input type="text" id="usernameInput" placeholder="Usuario" />
             </div>
             <div class="input-group">
                 <input type="password" id="passwordInput" placeholder="Contraseña" />
             </div>
-            <button class="btn btn-green" onclick="login()">Iniciar Sesión</button>
+            <button class="btn btn-green" id="loginButton" onclick="login()">Iniciar Sesión</button>
             <div class="register-link">
                 ¿No tienes cuenta? <a href="register.html">Regístrate</a>
             </div>

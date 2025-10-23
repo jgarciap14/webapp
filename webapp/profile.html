@@ -16,6 +16,23 @@
                 <div class="profile-name" id="profileName">Usuario</div>
                 <button class="btn btn-green" onclick="logout()">Cerrar Sesión</button>
             </div>
+
+            <div class="inspiration-box">
+                <div class="inspiration-header">
+                    <h3>¿Cuál es tu inspiración?</h3>
+                    <button class="btn-edit" id="editBtn" onclick="enableEdit()">Editar</button>
+                </div>
+                <div class="inspiration-content" id="inspirationContent">
+                    <p id="inspirationText">Escribe aquí tu inspiración...</p>
+                </div>
+                <div class="inspiration-edit" id="inspirationEdit" style="display: none;">
+                    <textarea id="inspirationTextarea" rows="5"></textarea>
+                    <div class="edit-buttons">
+                        <button class="btn btn-green" onclick="saveInspiration()">Guardar</button>
+                        <button class="btn btn-white" onclick="cancelEdit()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Bottom Navigation -->
@@ -31,6 +48,10 @@
             <button class="nav-item" onclick="navigateTo('forum.html')">
                 <div class="nav-icon">💬</div>
                 <div class="nav-label">Foro</div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('inspo.html')">
+                <div class="nav-icon">⭐</div>
+                <div class="nav-label">Inspo</div>
             </button>
             <button class="nav-item active" onclick="navigateTo('profile.html')">
                 <div class="nav-icon">👤</div>

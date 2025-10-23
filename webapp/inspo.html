@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspiración - App Sobriedad</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container active">
+        <!-- Inspiration Page -->
+        <div class="inspo-page page active" id="inspoPage">
+            <h2 class="inspo-title">Recuerda tu inspiración:</h2>
+
+            <div class="user-inspiration" id="userInspiration">
+                Escribe tu inspiración en el perfil...
+            </div>
+
+            <div class="quote-image-container">
+                <img id="dailyImage" class="daily-image" src="pics/pic-1.jpg" alt="Imagen inspiracional">
+                <div class="quote-overlay">
+                    <p class="quote-text" id="quoteText"></p>
+                    <p class="quote-author" id="quoteAuthor"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <button class="nav-item" onclick="navigateTo('index.html')">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('calendar.html')">
+                <div class="nav-icon">📅</div>
+                <div class="nav-label">Calendario</div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('forum.html')">
+                <div class="nav-icon">💬</div>
+                <div class="nav-label">Foro</div>
+            </button>
+            <button class="nav-item active" onclick="navigateTo('inspo.html')">
+                <div class="nav-icon">⭐</div>
+                <div class="nav-label">Inspo</div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('profile.html')">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Perfil</div>
+            </button>
+        </div>
+    </div>
+
+    <script src="inspo.js"></script>
+</body>
+</html>

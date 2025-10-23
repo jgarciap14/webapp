@@ -1,11 +1,15 @@
 let currentUser = localStorage.getItem('currentUser');
+let persistentSession = localStorage.getItem('persistentSession');
 let topics = [];
 let currentTopicId = null;
 
 // Redirect to login if not authenticated
-if (!currentUser) {
+if (!currentUser || persistentSession !== 'true') {
     window.location.href = 'login.html';
 }
+
+// Update last activity timestamp to maintain session
+localStorage.setItem('lastActivity', new Date().toISOString());
 
 function navigateTo(page) {
     window.location.href = page;

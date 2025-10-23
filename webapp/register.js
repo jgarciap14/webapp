@@ -4,7 +4,96 @@ if (savedUser) {
     window.location.href = 'index.html';
 }
 
+// Rate limiting configuration
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_TIME = 15 * 60 * 1000; // 15 minutes in milliseconds
+const RATE_WINDOW = 60 * 1000; // 1 minute in milliseconds
+
+function getRateLimitData() {
+    const data = localStorage.getItem('registerRateLimit');
+    if (!data) {
+        return { attempts: [], lockedUntil: null };
+    }
+    return JSON.parse(data);
+}
+
+function saveRateLimitData(data) {
+    localStorage.setItem('registerRateLimit', JSON.stringify(data));
+}
+
+function checkRateLimit() {
+    const rateLimitData = getRateLimitData();
+    const now = Date.now();
+
+    // Check if currently locked out
+    if (rateLimitData.lockedUntil && now < rateLimitData.lockedUntil) {
+        const remainingTime = Math.ceil((rateLimitData.lockedUntil - now) / 60000);
+        return {
+            allowed: false,
+            message: `Demasiados intentos. Intenta de nuevo en ${remainingTime} minuto(s).`
+        };
+    }
+
+    // Clear lockout if time has passed
+    if (rateLimitData.lockedUntil && now >= rateLimitData.lockedUntil) {
+        rateLimitData.attempts = [];
+        rateLimitData.lockedUntil = null;
+        saveRateLimitData(rateLimitData);
+    }
+
+    // Remove attempts older than 1 minute
+    rateLimitData.attempts = rateLimitData.attempts.filter(timestamp => now - timestamp < RATE_WINDOW);
+
+    // Check if max attempts reached
+    if (rateLimitData.attempts.length >= MAX_ATTEMPTS) {
+        rateLimitData.lockedUntil = now + LOCKOUT_TIME;
+        saveRateLimitData(rateLimitData);
+        return {
+            allowed: false,
+            message: 'Demasiados intentos de registro. Intenta de nuevo en 15 minutos.'
+        };
+    }
+
+    return { allowed: true };
+}
+
+function recordRegisterAttempt() {
+    const rateLimitData = getRateLimitData();
+    rateLimitData.attempts.push(Date.now());
+    saveRateLimitData(rateLimitData);
+}
+
+function disableRegisterButton(seconds) {
+    const button = document.getElementById('registerButton');
+    button.disabled = true;
+    button.classList.add('disabled');
+
+    let remaining = seconds;
+    const interval = setInterval(() => {
+        if (remaining <= 0) {
+            clearInterval(interval);
+            button.disabled = false;
+            button.classList.remove('disabled');
+            button.textContent = 'Registrarse';
+        } else {
+            button.textContent = `Espera ${remaining}s`;
+            remaining--;
+        }
+    }, 1000);
+}
+
 function register() {
+    // Check rate limit
+    const rateLimitCheck = checkRateLimit();
+    if (!rateLimitCheck.allowed) {
+        showError(rateLimitCheck.message);
+        const rateLimitData = getRateLimitData();
+        if (rateLimitData.lockedUntil) {
+            const remainingSeconds = Math.ceil((rateLimitData.lockedUntil - Date.now()) / 1000);
+            disableRegisterButton(remainingSeconds);
+        }
+        return;
+    }
     const email = document.getElementById('emailInput').value;
     const username = document.getElementById('usernameInput').value;
     const password = document.getElementById('passwordInput').value;
@@ -56,6 +145,9 @@ function register() {
         return;
     }
 
+    // Record registration attempt
+    recordRegisterAttempt();
+
     // Check if user already exists
     const userKey = `sobrietyApp_${username}`;
     if (localStorage.getItem(userKey)) {
@@ -75,6 +167,11 @@ function register() {
 
     localStorage.setItem(userKey, JSON.stringify(userData));
     localStorage.setItem('currentUser', username);
+    localStorage.setItem('persistentSession', 'true');
+    localStorage.setItem('lastLoginTime', new Date().toISOString());
+
+    // Clear rate limit on successful registration
+    localStorage.removeItem('registerRateLimit');
 
     // Redirect to home
     window.location.href = 'index.html';
@@ -86,8 +183,24 @@ function showError(message) {
     errorMessage.style.display = 'block';
 }
 
+// Check rate limit on page load
+function checkRateLimitOnLoad() {
+    const rateLimitCheck = checkRateLimit();
+    if (!rateLimitCheck.allowed) {
+        showError(rateLimitCheck.message);
+        const rateLimitData = getRateLimitData();
+        if (rateLimitData.lockedUntil) {
+            const remainingSeconds = Math.ceil((rateLimitData.lockedUntil - Date.now()) / 1000);
+            disableRegisterButton(remainingSeconds);
+        }
+    }
+}
+
 // Allow registration with Enter key
 document.addEventListener('DOMContentLoaded', function() {
+    // Check rate limit on load
+    checkRateLimitOnLoad();
+
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
         input.addEventListener('keypress', function(e) {

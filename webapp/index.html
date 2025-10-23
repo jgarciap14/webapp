@@ -14,6 +14,7 @@
             <div class="counter-container">
                 <div class="counter-label">Días sobrio</div>
                 <div class="counter" id="dayCounter">0</div>
+                <div class="symptom-label" id="symptomLabel">Ansiedad</div>
                 <div class="motivational-phrase" id="motivationalPhrase">Inicia un nuevo cambio</div>
             </div>
         </div>
@@ -32,6 +33,10 @@
                 <div class="nav-icon">💬</div>
                 <div class="nav-label">Foro</div>
             </button>
+            <button class="nav-item" onclick="navigateTo('inspo.html')">
+                <div class="nav-icon">⭐</div>
+                <div class="nav-label">Inspo</div>
+            </button>
             <button class="nav-item" onclick="navigateTo('profile.html')">
                 <div class="nav-icon">👤</div>
                 <div class="nav-label">Perfil</div>
@@ -41,12 +46,16 @@
 
     <script>
         let currentUser = localStorage.getItem('currentUser');
+        let persistentSession = localStorage.getItem('persistentSession');
         let startDate = null;
 
         // Redirect to login if not authenticated
-        if (!currentUser) {
+        if (!currentUser || persistentSession !== 'true') {
             window.location.href = 'login.html';
         }
+
+        // Update last activity timestamp to maintain session
+        localStorage.setItem('lastActivity', new Date().toISOString());
 
         function navigateTo(page) {
             window.location.href = page;
@@ -68,13 +77,29 @@
 
         function updateMotivationalPhrase(days) {
             let phrase = '';
-            if (days === 0) phrase = 'Inicia un nuevo cambio';
-            else if (days < 7) phrase = 'Un día a la vez, ¡vas bien!';
-            else if (days < 30) phrase = 'Tú puedes, sigue adelante';
-            else if (days < 90) phrase = '¡Excelente progreso! Sigue así';
-            else if (days < 180) phrase = '¡Increíble! Eres más fuerte de lo que crees';
-            else phrase = '¡Extraordinario! Eres un ejemplo de fortaleza';
+            let symptom = '';
 
+            if (days === 0) {
+                symptom = 'Ansiedad';
+                phrase = 'Inicia un nuevo cambio';
+            } else if (days < 7) {
+                symptom = 'Ansiedad';
+                phrase = 'Un día a la vez, ¡vas bien!';
+            } else if (days < 30) {
+                symptom = 'Irritabilidad';
+                phrase = 'Tú puedes, sigue adelante';
+            } else if (days < 90) {
+                symptom = 'Insomnio';
+                phrase = '¡Excelente progreso! Sigue así';
+            } else if (days < 180) {
+                symptom = 'Fatiga';
+                phrase = '¡Increíble! Eres más fuerte de lo que crees';
+            } else {
+                symptom = 'Estabilidad';
+                phrase = '¡Extraordinario! Eres un ejemplo de fortaleza';
+            }
+
+            document.getElementById('symptomLabel').textContent = symptom;
             document.getElementById('motivationalPhrase').textContent = phrase;
         }
 

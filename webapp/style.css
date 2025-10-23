@@ -86,6 +86,22 @@ body {
     background: #f0f0f0;
 }
 
+.btn:disabled,
+.btn.disabled {
+    background: #95a5a6;
+    color: #ecf0f1;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn:disabled:hover,
+.btn.disabled:hover {
+    background: #95a5a6;
+    transform: none;
+    box-shadow: none;
+}
+
 /* Register/Login Link */
 .register-link {
     text-align: center;
@@ -154,11 +170,19 @@ body {
     margin-bottom: 10px;
 }
 
+.symptom-label {
+    font-size: 22px;
+    color: black;
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
 .motivational-phrase {
     font-size: 18px;
     color: #777;
     font-style: italic;
-    margin-top: 20px;
+    margin-top: 10px;
     padding: 20px;
     background: #f9f9f9;
     border-radius: 10px;
@@ -494,4 +518,159 @@ body {
     border-radius: 5px;
     cursor: pointer;
     margin-bottom: 20px;
+}
+
+/* Inspiration Box */
+.inspiration-box {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.inspiration-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.inspiration-header h3 {
+    color: #333;
+    font-size: 18px;
+    margin: 0;
+}
+
+.btn-edit {
+    background: #2ecc71;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-edit:hover {
+    background: #27ae60;
+    transform: translateY(-1px);
+}
+
+.inspiration-content {
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    min-height: 100px;
+}
+
+.inspiration-content p {
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.inspiration-edit textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border 0.3s;
+}
+
+.inspiration-edit textarea:focus {
+    outline: none;
+    border-color: #2ecc71;
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.edit-buttons button {
+    flex: 1;
+}
+
+/* Inspo Page */
+.inspo-page {
+    padding: 20px;
+    display: none;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.inspo-page.active {
+    display: block;
+}
+
+.inspo-title {
+    color: #2ecc71;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.user-inspiration {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+    text-align: center;
+    font-style: italic;
+}
+
+.quote-image-container {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    min-height: 400px;
+    background: #f0f0f0;
+}
+
+.daily-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    min-height: 400px;
+}
+
+.quote-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #333;
+    width: 90%;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.quote-text {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.quote-author {
+    font-size: 16px;
+    color: #555;
+    font-style: italic;
+    margin: 0;
 }
